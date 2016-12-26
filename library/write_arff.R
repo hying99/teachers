@@ -1,0 +1,65 @@
+#生产符合CLUS软件要求的arff文件
+#将数据保存为arff格式，可以选择是否包含基因名称
+WriteArff<-function (original.filename,write.filename,modified.data,common.genes=common.genes,
+                     ontology="BP",class.label,class.graph,genename.exist=FALSE)
+{
+  #original.filename="cellcycle_GO.train.arff"
+  original.data <- scan(original.filename, what = list(""),sep = "\n")
+  each.row.data=list()
+  for(i in 1:length(original.data[[1]]))
+  {
+    each.row.data[i]=strsplit(original.data[[1]][i],split = " ")
+  }
+  head.row.num=which(each.row.data=="@DATA")
+  
+  gene.names=names(class.label)
+  #class.graph=graph.select.node.3
+  total.class=names(class.graph@edgeData@data)
+  if(ontology=="BP")
+  {
+    total.class=c("root/GO0008150",total.class)
+  }
+  
+  total.class=paste(total.class,collapse = ",")
+  total.class=gsub(":","",total.class)
+  total.class=gsub("\\|","/",total.class)
+  class.position=length(each.row.data[[head.row.num-1]])
+  each.row.data[[head.row.num-1]][class.position]=total.class
+  
+  #write.filename= "writehead"
+  for(i in 1:head.row.num)
+  {
+    if(i==1)
+    {
+      write.table(t(as.matrix(each.row.data[[i]])), file = write.filename, row.names = FALSE,col.names = FALSE, quote = FALSE,sep=" ")
+    }
+    else
+    {
+      write.table(t(as.matrix(each.row.data[[i]])), file = write.filename,append = TRUE, row.names = FALSE,col.names = FALSE, quote = FALSE,sep=" ")
+    }
+  }
+  #modified.data=training.cellcycle.data
+  #class.label=go.leaf.label.list
+  if (!is.null(common.genes)) 
+  {
+    modified.data=modified.data[common.genes,]
+  } 
+  for(i in 1:length(class.label))
+  {
+    class.label[[i]]=paste(class.label[[i]],collapse = "@")
+    class.label[[i]]=gsub(":","",class.label[[i]])
+  }
+ 
+  modified.data[is.na(modified.data)]="?"
+  if(genename.exist==FALSE)
+  {
+    matrix.total.data=cbind(modified.data,class.label)
+  }
+  if(genename.exist==TRUE)
+  {
+    matrix.total.data=cbind(modified.data,class.label,gene.names)
+  }
+  write.table(matrix.total.data, file = write.filename,append = TRUE,row.names = FALSE,col.names = FALSE, quote = FALSE,sep=",")
+  return (matrix.total.data)
+  
+}
