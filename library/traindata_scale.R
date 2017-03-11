@@ -1,5 +1,5 @@
 #替换原read_data函数对数据预处理的功能，对训练数据集进行处理
-TraindataScale<-function (training.original.data,factor.col,delete.outlier=TRUE,replace.outlier=TRUE,NAreplace=TRUE,Zrescale=TRUE)
+TraindataScale<-function (training.original.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,NAreplace=TRUE,Zrescale=TRUE)
 {
   col.num=ncol(training.original.data)
   row.num=nrow(training.original.data)
@@ -8,9 +8,11 @@ TraindataScale<-function (training.original.data,factor.col,delete.outlier=TRUE,
   sp=list()
   sp_name=c()
   sp.eachnum=matrix(0,nrow = col.num,ncol = 1)
+  #数据预处理目前仅对数据类型的各列数据进行处理
   for(j in numeric.col)
   {
     #dotchart(matrix.cellcycle.data[1:10,1])
+    #绘制箱形图，查找异常值
     sp[[j]]=boxplot(training.original.data[,j],horizontal=TRUE,plot=FALSE)
     sp_name=c(sp_name,names(sp[[j]]$out))
     sp.eachnum[j,1]=length(names(sp[[j]]$out))
@@ -21,7 +23,7 @@ TraindataScale<-function (training.original.data,factor.col,delete.outlier=TRUE,
   #此处判断异常值该如何处理
   if(delete.outlier==TRUE)
   {
-    #剔除具有异常值的样本
+    #默认剔除具有异常值的样本
     select.name=setdiff(training.original.name,sp_name)
     training.original.data=training.original.data[select.name,]
   } else if(replace.outlier==TRUE)
@@ -47,7 +49,7 @@ TraindataScale<-function (training.original.data,factor.col,delete.outlier=TRUE,
         
       }
     }
-  } else
+  } else#当delete.outlier replace.outlier均为false时，进行如下替换，一般情况下都进行如下替换
   { #将大于上界的异常值替换为上界，小于下界的异常值替换为下界
     for(j in numeric.col)
     {
@@ -71,7 +73,7 @@ TraindataScale<-function (training.original.data,factor.col,delete.outlier=TRUE,
   }
   
   each.col.status=matrix(0,nrow = col.num,ncol = 1)
-  if(NAreplace==TRUE)
+  if(NAreplace==TRUE)#对数据中存在的NA进行替换
   {
     #计算每列的最小值、最大值、平均值
     for(j in numeric.col)

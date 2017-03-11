@@ -11,7 +11,8 @@ ReadData<-function (filename,factor.col,Nametoupper=TRUE,Tonum=TRUE)
   numeric.col=setdiff(c(1:col.num),factor.col)#根据输入的factor属性列号，求numeric属性的列号
   
   
-  #将factor类型数据转化为数字型
+  #如果数据中存在factor类型，则将factor类型数据转化为数字型
+  #factor.col用来指定哪些列的数据是facttor类型
   for (j in factor.col)
   {
     col.data=filedata[,j]

@@ -1,5 +1,5 @@
 #用于检验预测结果是否符合TPR规则，输入为各节点的预测概率值
-ViolateDetect<-function (go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,input.prob)
+ViolateDetectprob<-function (go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,input.prob)
 {
   row.num=nrow(input.prob)#输入的样本数量
   col.num=length(nodes.to.children)#预测类别标签总数
@@ -32,7 +32,7 @@ ViolateDetect<-function (go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.chil
           {
             if(inter.pos.prob<0.5)#当对于父节点，此样本为负时
             {
-              if(input.prob[k,2*(children.index[m])-1]>0.5)#若此时子节点children.index[m]为正
+              if(input.prob[k,2*(children.index[m])-1]>=0.5)#若此时子节点children.index[m]为正
               {
                 #violate_result[k,gene.index]=1
                 

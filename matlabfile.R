@@ -1,6 +1,7 @@
 #用于生成MIML中所需的训练及测试文件
-
-setwd("H://R//DATA")#设置工作路径
+work.path="H://R//CODES"
+data.path="H://R//DATA"
+setwd(work.path)#设置工作路径
 
 #引入库函数以及自定义的函数
 source("headfile.R")
@@ -47,7 +48,7 @@ NAreplace=TRUE
 Zrescale=TRUE
 write.data.enable=TRUE
 write.class.enable=TRUE
-BuildMatlabDataset(file.prefix=file.prefix, factor.col=factor.col, work.path=work.path,file.savepath=file.savepath,
+BuildMatlabDataset(file.prefix=file.prefix, factor.col=factor.col, data.path=data.path,file.savepath=file.savepath,
                    delete.outlier=delete.outlier,replace.outlier=replace.outlier, NAreplace=NAreplace,
                    Zrescale=Zrescale, write.data.enable=write.data.enable,write.class.enable=write.class.enable)
 
@@ -60,6 +61,6 @@ NAreplace=TRUE
 Zrescale=TRUE
 write.data.enable=TRUE
 write.class.enable=TRUE
-BuildMatlabDataset(file.prefix=file.prefix, factor.col=factor.col, work.path=work.path,file.savepath=file.savepath,
+BuildMatlabDataset(file.prefix=file.prefix, factor.col=factor.col,data.path=data.path,file.savepath=file.savepath,
                    delete.outlier=delete.outlier,replace.outlier=replace.outlier, NAreplace=NAreplace,
                    Zrescale=Zrescale, write.data.enable=write.data.enable,write.class.enable=write.class.enable)

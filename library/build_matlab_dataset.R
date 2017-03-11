@@ -1,9 +1,9 @@
 #用于生成MIML中所需训练及测试文件的函数
-BuildMatlabDataset<-function (file.prefix, factor.col, work.path,file.savepath,delete.outlier,
+BuildMatlabDataset<-function (file.prefix, factor.col,data.path,file.savepath,delete.outlier,
                               replace.outlier, NAreplace,Zrescale, write.data.enable,
                               write.class.enable)
 {
-  setwd(work.path)
+  setwd(data.path)
   matrix.cellcycle=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
   matrix.cellcycle.data=matrix.cellcycle[[1]]#基因的数据信息
   
@@ -74,7 +74,7 @@ BuildMatlabDataset<-function (file.prefix, factor.col, work.path,file.savepath,d
   }
   
   
-  setwd(work.path)
+  setwd(data.path)
   original.valid.file=paste("originaldata//",file.prefix,"0.valid",sep = "")
   select.attributes.en=FALSE
   
@@ -95,7 +95,7 @@ BuildMatlabDataset<-function (file.prefix, factor.col, work.path,file.savepath,d
     valid.select.table=valid.data.total[[2]]
   }
   
-  setwd(work.path)
+  setwd(data.path)
   original.test.file=paste("originaldata//",file.prefix,"0.propertest",sep = "")
   select.attributes.en=FALSE
   if(select.attributes.en==FALSE)

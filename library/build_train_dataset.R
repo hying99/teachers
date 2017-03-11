@@ -8,8 +8,7 @@ BuildTrainDataset<-function (Table.gene.class, except.root.labels, data.matrix,
   if(is.null(common.genes))
   {
     sample.total.num=nrow(data.matrix)
-  }
-  else
+  }  else
   {
     sample.total.num=length(common.genes)
   }

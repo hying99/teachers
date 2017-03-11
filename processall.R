@@ -10,17 +10,17 @@ go.general.list.BP=Get.GO.all.classes(annotation.final.BP)#¸ù¾Ý»ùÒòµÄ×¢ÊÍGO±êÇ©µ
 go.general.table.BP=Build.GO.class.labels(go.general.list.BP)#Éú³É»ùÒò¼°×¢ÊÍÐÅÏ¢Êý¾Ý±í
 
 
-file.prefix="derisi"
+file.prefix="cellcycle"
 factor.col=c(0)
 file.savepath="H://R//DATA//processalldata"
 delete.outlier=FALSE
 replace.outlier = FALSE
 NAreplace=TRUE
 Zrescale=TRUE
-write.enable=TRUE
+write.enable=FALSE
 result.process=TRUE
-matfile.path="H://R//DATA//matfile"
-file.type="change"
+matfile.path="H://R//DATA//mimlmatfile"
+file.type=""
 file.middle="0"
 result.savepath="H://R//RESULT"
   

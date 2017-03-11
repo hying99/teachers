@@ -38,8 +38,7 @@ AddNegSamples=function (original.data, sample.total.num,classid,Table.gene.class
     if(renew.n.neg<(renew.n.pos*(1+adjust.ratio)))
     {
       result=renew.data
-    }
-    else
+    }    else
     {
       new.neg.num=original.n.pos-original.n.neg
       ind <- trunc(runif(new.neg.num, min=1, max=renew.n.neg-original.n.neg+1))

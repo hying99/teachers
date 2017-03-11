@@ -11,21 +11,18 @@ SmoteSamples=function (original.data,adjust.ratio=0.2)
     if(np.ratio<2)
     {
       smote.num=(floor(np.ratio))*100 
-    }
-    else
+    }    else
     {
       smote.num=(round(np.ratio)-1)*100 
     }
     
-  }
-  else
+  }  else
   {#此时负类样本为少类样本
     pn.ratio=original.n.pos/original.n.neg
     if(pn.ratio<2)
     {
       smote.num=(floor(pn.ratio))*100 
-    }
-    else
+    }   else
     {
       smote.num=(round(pn.ratio)-1)*100 
     }
@@ -51,8 +48,7 @@ SmoteSamples=function (original.data,adjust.ratio=0.2)
       smote.pos.example=smote.pos.example[1:n.neg,]
       total.example=rbind(smote.pos.example,neg.example)
     }
-  }
-  else
+  }  else
   {
     #选择SMOTE生成的负样本以及原始正样本组成新的数据集
     neg.index=which(Data.smote$label==2)

@@ -1,6 +1,7 @@
 #用于gasch2数据的处理，训练前期数据处理，用于生成合适的训练集以及测试集
-setwd("H://R//DATA")#设置工作路径
-
+work.path="H://R//CODES"
+data.path="H://R//DATA"
+setwd(work.path)#设置工作路径
 #引入库函数以及自定义的函数
 source("headfile.R")
 BP.univ.graph <- Build.universal.graph.ontology.down(ontology = "BP")#得到BP全图
@@ -12,7 +13,7 @@ file.prefix="gasch2"
 #matrix.cellcycle=ReadData("originaldata//cellcycle0.train")#读入基因特征属性
 #读取数据时，01调整Zrescale和标准化ZNormal不能同时使用
 factor.col=c(0)
-
+setwd(data.path)
 matrix.cellcycle=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
 matrix.cellcycle.data=matrix.cellcycle[[1]]#基因的数据信息
 
