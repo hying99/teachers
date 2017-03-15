@@ -85,6 +85,13 @@ if(test.en==TRUE)
   
 }
 
+#使用newpathrule方法处理的结果
+final.result=NewPathrule(prob.for.genes,except.root.labels.3,go.for.level.3,go.leaf.nodes.3,test.select.table)
+final.predict.labels=final.result[[1]]
+final.predict.scores=final.result[[2]]
+prauc_result.final=PRAUCCalculate(final.predict.scores,test.select.table)
+measure.result.final=MHevaluate(final.predict.labels,test.select.table)
+
 # if(test.en==TRUE)#此部分代码用于实现权值TPR算法
 # {
 #   predict.w.labels=matrix(0,nrow(test.select.table),ncol(test.select.table))

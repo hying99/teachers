@@ -63,21 +63,38 @@ graph.select.node.3 <- subGraph(select.node.3, BP.univ.graph)
 PlotLabelGraph(except.root.labels.3,BP.univ.graph,num.only=FALSE,plot.en = TRUE,output.en = FALSE,write.pic.name = "go.graph.level.ps")
 
 each.go.level.num=graph.BP.level.50[except.root.labels.3]
-each.go.weight=unname(each.go.level.num)
 
-for (i in 1:length(each.go.level.num))
-{
-  each.go.weight[i]=(total.levels+1-each.go.weight[i])/(total.levels+1)
-}
 
-#go.leaf.nodes.3=GetLeafNode1(graph.select.node.3)
+####第十步 得到所选节点的层级信息列表，叶子节点集合，父节点、子节点、祖先节点以及子孙节点列表
+####       此步产生的信息用于分类结果的后处理
 
-for (i in 1:length(go.label.list))
-{
-  go.label.list[[i]]=intersect(go.label.list[[i]],select.node.3)
-}
+go.leaf.nodes.3=GetLeafNode1(graph.select.node.3)#得到子图中的叶子节点
+#按照层级选择一定数量的节点，go.for.level.3所选层级与select.node.3相同，内容也相同，但存储为list形式
+go.for.level.3=go.for.each.level[1:total.levels]
+#用于生产各节点的编号，以及节点与子节点的编号映射列表
+total.index=MakeIndex(except.root.labels.3)
+nodes.to.index=total.index[[1]]
+nodes.to.children=total.index[[2]]
+nodes.to.ancestors=total.index[[3]]
+nodes.to.parents=total.index[[4]]
+nodes.to.descendants=total.index[[5]]
 
-root.table.3=Build.GO.class.labels(go.label.list)
+# for (i in 1:length(each.go.level.num))
+# {
+#   each.go.weight[i]=(total.levels+1-each.go.weight[i])/(total.levels+1)
+# }
+# 
+# #go.leaf.nodes.3=GetLeafNode1(graph.select.node.3)
+# 
+# for (i in 1:length(go.label.list))
+# {
+#   go.label.list[[i]]=intersect(go.label.list[[i]],select.node.3)
+# }
+# 
+# root.table.3=Build.GO.class.labels(go.label.list)
+####第十一步 生成训练集，若想用不同方法生成训练集，则在此处替换BuildTrainDataset函数
+#产生构建训练集所需的GO标签
+root.table.3=match.go.table[,except.root.labels.3]
 setwd("H://R//DATA//traindata")
 
 select.attributes.en=FALSE

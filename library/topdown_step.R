@@ -19,15 +19,15 @@ TopDownStep<-function (go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.childr
             children.index=nodes.to.children[[gene.name]]
             for(m in 1:length(children.index))
             {
-              if(inter.pos.prob<0.5)#当对于父节点，此样本为负时
-              {
+              #if(inter.pos.prob<0.5)#当对于父节点，此样本为负时
+              
                 #若此时子节点children.index[m]为正的概率比父节点为正的概率大
                 if(topdown.prob[k,2*(children.index[m])-1]>inter.pos.prob)
                 {
                   topdown.prob[k,2*(children.index[[m]])-1]=inter.pos.prob
                   topdown.prob[k,2*(children.index[[m]])]=1-inter.pos.prob
                 }
-              }
+              
             }
           }
       }

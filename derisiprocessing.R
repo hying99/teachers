@@ -100,7 +100,7 @@ nodes.to.descendants=total.index[[5]]
 #   go.label.list[[i]]=intersect(go.label.list[[i]],select.node.3)
 # }
 # root.table.3=Build.GO.class.labels(go.label.list)
-#产生构建训练集所需的GO标签他变了数据
+#产生构建训练集所需的GO标签
 root.table.3=match.go.table[,except.root.labels.3]
 #将工作路径改为将要存放生成的训练集csv文件的文件夹
 #setwd("H://R//DATA//traindata")
