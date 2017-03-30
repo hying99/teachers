@@ -13,6 +13,8 @@ library(ROSE)
 library(DMwR)
 library(marray)
 library(scales)
+library(gpls)
+library(plsgenomics)
 
 setwd(library.path)
 
@@ -55,6 +57,8 @@ source("traindata_scale.R")
 source("violate_detectprob.R")
 source("violate_detectlabel.R")
 source("data_process.R")
+source("dataset_rebuild.R")
+source("dataset_select.R")
 source("new_pathrule.R")#用于实现基于父子节点修改概率的后期处理方法
 #用于NegGOA实现的各函数
 source("getNegPotential.R")

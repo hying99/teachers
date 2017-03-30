@@ -1,5 +1,5 @@
 #替换原read_data函数对数据预处理的功能，对训练数据集进行处理
-TraindataScale<-function (training.original.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+TraindataScale<-function (training.original.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
 {
   col.num=ncol(training.original.data)
   row.num=nrow(training.original.data)
@@ -49,6 +49,9 @@ TraindataScale<-function (training.original.data,factor.col,delete.outlier=FALSE
         
       }
     }
+  } else if(no.del.replace==TRUE)#不进行异常值替换和删除
+  {
+    
   } else#当delete.outlier replace.outlier均为false时，进行如下替换，一般情况下都进行如下替换
   { #将大于上界的异常值替换为上界，小于下界的异常值替换为下界
     for(j in numeric.col)

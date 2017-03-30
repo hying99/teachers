@@ -15,7 +15,7 @@ BuildTrainDataset<-function (Table.gene.class, except.root.labels, data.matrix,
   for(i in 1:label.length)
   {
     data.total[[i]]=Get.matrix.data.change(Table.gene.class,classid = except.root.labels[i],
-                                                     data.matrix,ontology = "BP",common.genes = common.genes)
+                                                     data.matrix,ontology = ontology,common.genes = common.genes)
   }
   names(data.total)=except.root.labels
   neg.num=list()
@@ -37,7 +37,7 @@ BuildTrainDataset<-function (Table.gene.class, except.root.labels, data.matrix,
         classid=names(data.total[i])
         data.total[[i]]=AddNegSamples(data.total[[i]], sample.total.num,
                                                 classid,Table.gene.class, data.matrix,
-                                                ontology = "BP", adjust.ratio=0.2,ratio.negative = 0, 
+                                                ontology = ontology, adjust.ratio=0.2,ratio.negative = 0, 
                                                 common.genes = common.genes,seed = 1)
       }      else
       {

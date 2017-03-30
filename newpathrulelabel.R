@@ -1,5 +1,10 @@
 #用于实现后期标签值的处理 20170310
 
+
+setwd(data.path)
+# mat.result=readMat("test_predict_labels.mat",fixNames = FALSE)
+# test.predict.labels=mat.result$predict_labels
+# first.predict.labels=test.predict.labels
 ####第一步 将SVM的概率结果读入
 
 file.type="change"
@@ -200,7 +205,7 @@ second.predict.labels=first.predict.labels#预测的最终结果将存于final.predict.lab
 # second.measure.result=MHevaluate(second.predict.labels,test.select.table)
 
 ##自顶而下遍历样本，确定一个节点预测为0或者1时是否需要修改############
-for(k in 1:nrow(prob.for.genes))#对于每一个样本k
+for(k in 1:nrow(first.predict.labels))#对于每一个样本k
 {
   for (i in 1:total.levels)#按层自上而下遍历节点
   {

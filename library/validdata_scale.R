@@ -1,5 +1,5 @@
 #替换原read_data函数对数据预处理的功能，对验证及测试数据集进行处理
-ValiddataScale<-function (valid.original.data,factor.col,sp,replace.outlier=TRUE,NAreplace=TRUE,Zrescale=TRUE)
+ValiddataScale<-function (valid.original.data,factor.col,sp,replace.outlier=TRUE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
 {
   
   valid.col.num=ncol(valid.original.data)
@@ -30,7 +30,10 @@ ValiddataScale<-function (valid.original.data,factor.col,sp,replace.outlier=TRUE
         }
       }
     }
-  } else
+  }else if(no.del.replace==TRUE) #此处为真，则不对数据进行异常值替换操作
+  {
+    
+  }  else
   { #将大于上届的异常值替换为上届，小于上届的异常值替换为下届
     for(j in numeric.col)
     {
@@ -96,6 +99,9 @@ ValiddataScale<-function (valid.original.data,factor.col,sp,replace.outlier=TRUE
         
       }
     }
+  }else
+  {
+    valid.scaled.data=valid.original.data
   }
   
   result=valid.scaled.data

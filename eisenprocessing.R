@@ -24,13 +24,14 @@ matrix.cellcycle.data=matrix.cellcycle[[1]]#基因的数据信息
 training.cellcycle.data=matrix.cellcycle.data
 #training.cellcycle.name=rownames(training.cellcycle.data)#基因名称列表
 #对输入数据剔除异常值，并进行归一化处理
-trainscale.result=TraindataScale(training.cellcycle.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+trainscale.result=TraindataScale(training.cellcycle.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,no.del.replace = FALSE,NAreplace=TRUE,Zrescale=TRUE)
 
 remain.data=trainscale.result[[1]]
 sp=trainscale.result[[2]]
 
 #得到几个数据集共有的基因的名称列表
 common.genes <- Get.all.common.genes(go.general.table.BP, remain.data)
+remain.select.data=remain.data[common.genes,]
 #得到common genes中每个基因对应的全部GO标签列表
 match.go.general=go.general.list.BP[common.genes]
 
@@ -118,7 +119,7 @@ if(select.attributes.en==FALSE)
   write.class.fname=paste(file.prefix,"0_validclass.csv",sep = "")
   valid.cellcycle=ReadData(original.valid.file,factor.col = factor.col)#读入valid基因特征属性
   valid.cellcycle.data=valid.cellcycle[[1]]#valid基因的数据信息
-  valid.scaled.data=ValiddataScale(valid.cellcycle.data,factor.col,sp,replace.outlier=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+  valid.scaled.data=ValiddataScale(valid.cellcycle.data,factor.col,sp,replace.outlier=FALSE,no.del.replace = FALSE,NAreplace=TRUE,Zrescale=TRUE)
   
   valid.data.total=BuildValidset(valid.scaled.data,go.general.table.BP,go.general.list.BP,except.root.labels.3,
                                  write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,
@@ -137,7 +138,7 @@ if(select.attributes.en==FALSE)
   write.class.fname=paste(file.prefix,"0_testclass.csv",sep = "")
   test.cellcycle=ReadData(original.test.file,factor.col = factor.col)#读入test基因特征属性
   test.cellcycle.data=test.cellcycle[[1]]#test基因的数据信息
-  test.scaled.data=ValiddataScale(test.cellcycle.data,factor.col,sp,replace.outlier=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+  test.scaled.data=ValiddataScale(test.cellcycle.data,factor.col,sp,replace.outlier=FALSE,no.del.replace = FALSE,NAreplace=TRUE,Zrescale=TRUE)
   test.data.total=BuildValidset(test.scaled.data,go.general.table.BP,go.general.list.BP,except.root.labels.3,
                                 write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,
                                 write.class.fname=write.class.fname,select.attributes.en=select.attributes.en,select.attributes)
