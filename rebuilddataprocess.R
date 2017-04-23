@@ -19,13 +19,13 @@ go.general.table=Build.GO.class.labels(go.general.list)#生成基因及注释信息数据表
 
 ####第四步 读入待处理的训练数据
 #首先选择使用的数据集，1 cellcycle 2 derisi 3 eisen 4 gasch1 5 gasch2 6 church 7 spo 8 seq 9 struc 10 hom
-#此处以derisi为例
-dataset.result=DatasetSelect(dataset.index = 2)
+
+dataset.result=DatasetSelect(dataset.index = 5)
 file.prefix=dataset.result[[1]]#得到数据集前缀名称
 factor.col=dataset.result[[2]]#得到内容为类别信息的列号
 #读取数据时，01调整Zrescale和标准化ZNormal不能同时使用
 setwd(data.path)#将工作路径设置为存储训练训练数据的路径，以便读取训练数据
-read.original=FALSE#此处选择读取原数据还是读取经过重采样的csv数据
+read.original=TRUE#此处选择读取原数据还是读取经过重采样的csv数据
 if(read.original)#选择读取原始的训练文件
 {
   train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
@@ -113,16 +113,23 @@ nodes.to.descendants=total.index[[5]]
 #   each.go.weight[i]=(total.levels+1-each.go.weight[i])/(total.levels+1)
 # }
 
-####第十一步 生成训练集，若想用不同方法生成训练集，则在此处替换BuildTrainDataset函数
+
 
 # for (i in 1:length(go.label.list))
 # {
 #   go.label.list[[i]]=intersect(go.label.list[[i]],select.node.3)
 # }
 # root.table.3=Build.GO.class.labels(go.label.list)
+####第十一步 生成构建训练集所需的GO标签，并且计算平均每个样本所含有的标签数量
 #产生构建训练集所需的GO标签
 except.root.table=match.go.table[,except.root.labels]
 root.table=match.go.table[,select.node]
+#训练集样本数量
+sample.num=nrow(root.table)
+#平均每个样本所含有的标签数量
+average.label=sum(root.table)/sample.num
+
+####第十二步 生成训练集，若想用不同方法生成训练集，则在此处替换BuildTrainDataset函数
 #将工作路径改为将要存放生成的训练集csv文件的文件夹
 #setwd("H://R//DATA//traindata")
 setwd(paste(data.path,"//traindata",sep = ""))
@@ -133,7 +140,7 @@ data.total=BuildTrainDataset(root.table, except.root.labels, data.matrix=remain.
                              seed = 1,select.attributes.en=select.attributes.en,write.en=TRUE)
 
 
-####第十二步 生成验证集
+####第十三步 生成验证集
 
 setwd(data.path)
 if(read.original)#选择读取原始的验证集文件
@@ -164,7 +171,7 @@ valid.data.total=BuildValidset(valid.scaled.data,go.general.table,go.general.lis
 valid.select.data=valid.data.total[[1]]
 valid.select.table=valid.data.total[[2]]
 
-####第十三步 生成测试集
+####第十四步 生成测试集
 setwd(data.path)
 if(read.original)#选择读取原始的测试集文件
 {

@@ -1,4 +1,5 @@
-#将原始基因数据读入,目前NA替换，数据归一化、标准化工作已经改在scale函数里实现
+#将原始基因数据读入,去掉原始数据中的样本标签，并将数据转化为数值矩阵
+#目前NA替换，数据归一化、标准化工作已经改在scale函数里实现
 ReadData<-function (filename,factor.col,Nametoupper=TRUE,Tonum=TRUE)
 {
   mydata <- scan(filename, what = list("", "", ""))#读入待处理数据,用于得到基因名称列表

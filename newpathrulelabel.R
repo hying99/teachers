@@ -2,9 +2,9 @@
 
 
 setwd(data.path)
-# mat.result=readMat("test_predict_labels.mat",fixNames = FALSE)
-# test.predict.labels=mat.result$predict_labels
-# first.predict.labels=test.predict.labels
+mat.result=readMat("test_predict_labels.mat",fixNames = FALSE)
+test.predict.labels=mat.result$predict_labels
+first.predict.labels=test.predict.labels
 ####第一步 将SVM的概率结果读入
 
 file.type="change"
@@ -209,17 +209,17 @@ for(k in 1:nrow(first.predict.labels))#对于每一个样本k
 {
   for (i in 1:total.levels)#按层自上而下遍历节点
   {
-    for(j in 1:length(go.for.level.3[[i]]))
+    for(j in 1:length(go.for.level[[i]]))
     {
-      gene.name=(go.for.level.3[[i]])[[j]]#得到(go.for.level[[i]])[[j]]节点的GO标签
-      gene.index=nodes.to.index[[(go.for.level.3[[i]])[j]]]#得到该节点的索引号
+      gene.name=(go.for.level[[i]])[[j]]#得到(go.for.level[[i]])[[j]]节点的GO标签
+      gene.index=nodes.to.index[[(go.for.level[[i]])[j]]]#得到该节点的索引号
       ancestor.index=nodes.to.ancestors[[gene.index]]#得到其祖先节点的索引号
       ancestor.labels=first.predict.labels[k,ancestor.index]#得到其祖先节点的预测值
       children.index=nodes.to.children[[gene.index]]#得到此节点的所有子节点的序号
       children.labels=first.predict.labels[k,children.index]#得到其子节点的预测值，此时子节点可能有多个
       parent.index=nodes.to.parents[[gene.index]]#得到其父节点的索引号
       parent.labels=first.predict.labels[k,parent.index]#得到其父节点的预测值，此时父节点可能有多个
-      is.leafnode=go.for.level.3[[i]][[j]] %in% go.leaf.nodes.3#判断该节点是否则为叶子节点
+      is.leafnode=go.for.level[[i]][[j]] %in% go.leaf.nodes#判断该节点是否则为叶子节点
       
       if(i==1)#对于第一层节点，此层节点假定均属于根结点
       {
@@ -366,13 +366,13 @@ final.predict.labels=second.predict.labels
 ##自顶而下遍历样本，将为0的节点的所有子孙节点均置为0############
 for(k in 1:nrow(final.predict.labels))#遍历每一个样本
 {
-  for (i in 1:(length(go.for.level.3)-1))#按层自上而下遍历所有节点
+  for (i in 1:(length(go.for.level)-1))#按层自上而下遍历所有节点
   {
-    for(j in 1:length(go.for.level.3[[i]]))#分别遍历每层的节点
+    for(j in 1:length(go.for.level[[i]]))#分别遍历每层的节点
     {
-      is.leafnode=go.for.level.3[[i]][[j]] %in% go.leaf.nodes.3#判断该节点是否则为叶子节点
-      gene.name=go.for.level.3[[i]][[j]]#得到此时处理节点的GO标签名称
-      gene.index=nodes.to.index[[(go.for.level.3[[i]])[j]]]#得到该节点在节点列表中的序号
+      is.leafnode=go.for.level[[i]][[j]] %in% go.leaf.nodes#判断该节点是否则为叶子节点
+      gene.name=go.for.level[[i]][[j]]#得到此时处理节点的GO标签名称
+      gene.index=nodes.to.index[[(go.for.level[[i]])[j]]]#得到该节点在节点列表中的序号
       if(is.leafnode!=TRUE)
       {
         if(final.predict.labels[k,gene.index]==0)#如果该节点的预测值为负值

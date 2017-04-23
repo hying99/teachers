@@ -2,7 +2,7 @@
 
 ####第一步 将SVM的概率结果读入
 
-file.type="pls"
+file.type=""
 file.middle="0"
 #设置mat文件存储路径
 setwd(paste(data.path,"//matfile",sep = ""))
@@ -68,12 +68,12 @@ if(test.en==TRUE)
   colnames(predict.scores)=colnames(test.select.table)
   for(i in 1:nrow(topdown.prob))
   {
-    for(j in 1:length(except.root.labels.3))
+    for(j in 1:length(except.root.labels))
     {
       predict.scores[i,j]=topdown.prob[i,(2*j-1)]
       if(topdown.prob[i,(2*j-1)]>0.5)
       {
-        predict.labels[i,except.root.labels.3[j]]=1
+        predict.labels[i,except.root.labels[j]]=1
       }
     }
   }

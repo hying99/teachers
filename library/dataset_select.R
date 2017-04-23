@@ -20,7 +20,8 @@ DatasetSelect<-function (dataset.index)
     factor.col=c(0)
   }else if(dataset.index==4)
   {
-    
+    file.prefix="gasch1"
+    factor.col=c(0)
   }else if(dataset.index==5)
   {
     file.prefix="gasch2"

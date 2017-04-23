@@ -1,53 +1,53 @@
-####ÓÉÓÚÄ¿Ç°ÑµÁ·¼¯ ÑéÖ¤¼¯ ²âÊÔ¼¯Êý¾Ý·ÖÅä²úÉúµÄ²îÒìÐÔºÜ´ó£¬²ÉÓÃ´Ëº¯ÊýÖØÐÂÉú³ÉÈýÖÖÊý¾Ý¼¯ 20170328
-####´Ëº¯Êý½öÊä³öÖØ²ÉÑùºóµÄÊý¾Ý¼¯£¬²»Ö§³Ö¶ÔÊý¾ÝµÄÊôÐÔÑ¡Ôñ,Ò²²»Êä³ö±êÇ©
-####ÓÉÓÚº¯Êý²ÉÓÃ²ÉÑù·½·¨ÖØÐÂÉú³ÉÈýÖÖÊý¾Ý¼¯£¬¹ÊÃ¿´ÎÉú³É½á¹û¾ù²»ÏàÍ¬
-####row.names.enableÓÃÓÚÑ¡ÔñÊÇ·ñÊä³ö¸÷ÐÐÃû³Æ£¬¼´»ùÒòµÄÃû³Æ£»ÒòÊý¾Ý´¦ÐèÇóÒª£¬Ä¬ÈÏÎªÊä³ö
+####ç”±äºŽç›®å‰è®­ç»ƒé›? éªŒè¯é›? æµ‹è¯•é›†æ•°æ®åˆ†é…äº§ç”Ÿçš„å·®å¼‚æ€§å¾ˆå¤§ï¼Œé‡‡ç”¨æ­¤å‡½æ•°é‡æ–°ç”Ÿæˆä¸‰ç§æ•°æ®é›† 20170328
+####æ­¤å‡½æ•°ä»…è¾“å‡ºé‡é‡‡æ ·åŽçš„æ•°æ®é›†ï¼Œä¸æ”¯æŒå¯¹æ•°æ®çš„å±žæ€§é€‰æ‹©,ä¹Ÿä¸è¾“å‡ºæ ‡ç­¾
+####ç”±äºŽå‡½æ•°é‡‡ç”¨é‡‡æ ·æ–¹æ³•é‡æ–°ç”Ÿæˆä¸‰ç§æ•°æ®é›†ï¼Œæ•…æ¯æ¬¡ç”Ÿæˆç»“æžœå‡ä¸ç›¸å?
+####row.names.enableç”¨äºŽé€‰æ‹©æ˜¯å¦è¾“å‡ºå„è¡Œåç§°ï¼Œå³åŸºå› çš„åç§°ï¼›å› æ•°æ®å¤„éœ€æ±‚è¦ï¼Œé»˜è®¤ä¸ºè¾“å‡º
 DatasetRebuild<-function (file.prefix,factor.col,data.path,file.savepath, 
                           write.data.enable=TRUE ,row.names.enable=TRUE)
 {
   setwd(data.path)
-  #¶ÁÈëÑµÁ·¼¯Êý¾Ý
+  #è¯»å…¥è®­ç»ƒé›†æ•°æ?
   train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
-  train.original.data=train.original[[1]]#»ùÒòµÄÊý¾ÝÐÅÏ¢
-  #¶ÁÈëÑéÖ¤¼¯
+  train.original.data=train.original[[1]]#åŸºå› çš„æ•°æ®ä¿¡æ?
+  #è¯»å…¥éªŒè¯é›?
   original.valid.file=paste("originaldata//",file.prefix,"0.valid",sep = "")
-  valid.original=ReadData(original.valid.file,factor.col = factor.col)#¶ÁÈëvalid»ùÒòÌØÕ÷ÊôÐÔ
-  valid.original.data=valid.original[[1]]#valid»ùÒòµÄÊý¾ÝÐÅÏ¢
-  #¶ÁÈë²âÊÔ¼¯
+  valid.original=ReadData(original.valid.file,factor.col = factor.col)#è¯»å…¥validåŸºå› ç‰¹å¾å±žæ€?
+  valid.original.data=valid.original[[1]]#validåŸºå› çš„æ•°æ®ä¿¡æ?
+  #è¯»å…¥æµ‹è¯•é›?
   original.test.file=paste("originaldata//",file.prefix,"0.propertest",sep = "")
-  test.original=ReadData(original.test.file,factor.col = factor.col)#¶ÁÈëtest»ùÒòÌØÕ÷ÊôÐÔ
-  test.original.data=test.original[[1]]#test»ùÒòµÄÊý¾ÝÐÅÏ¢
-  #½«Èý¸öÊý¾Ý¼¯ºÏ²¢
+  test.original=ReadData(original.test.file,factor.col = factor.col)#è¯»å…¥teståŸºå› ç‰¹å¾å±žæ€?
+  test.original.data=test.original[[1]]#teståŸºå› çš„æ•°æ®ä¿¡æ?
+  #å°†ä¸‰ä¸ªæ•°æ®é›†åˆå¹¶
   all.data=rbind(train.original.data,valid.original.data,test.original.data)
-  #µÃµ½ºÏ²¢ºóµÄÊý¾Ý¼¯ÓÐ×¢ÊÍÐÅÏ¢µÄ»ùÒòÃû³ÆÁÐ±í
+  #å¾—åˆ°åˆå¹¶åŽçš„æ•°æ®é›†æœ‰æ³¨é‡Šä¿¡æ¯çš„åŸºå› åç§°åˆ—è¡?
   common.genes <- Get.all.common.genes(go.general.table.BP, all.data)
-  #µÃµ½ÓÐ×¢ÊÍµÄ»ùÒò¶ÔÓ¦µÄÊý¾Ý
+  #å¾—åˆ°æœ‰æ³¨é‡Šçš„åŸºå› å¯¹åº”çš„æ•°æ?
   select.all.data=all.data[common.genes,]
-  #µÃµ½ÏÖÓÐÊý¾ÝµÄ×ÜÑù±¾Êý
+  #å¾—åˆ°çŽ°æœ‰æ•°æ®çš„æ€»æ ·æœ¬æ•°
   all.sample.num=nrow(select.all.data)
-  #¶ÔÏÖÓÐµÄÊý¾ÝÑù±¾µÄË³Ðò½øÐÐ³éÑùÖØÅÅÁÐ
+  #å¯¹çŽ°æœ‰çš„æ•°æ®æ ·æœ¬çš„é¡ºåºè¿›è¡ŒæŠ½æ ·é‡æŽ’åˆ—
   all.sample.index=sample(c(1:all.sample.num),all.sample.num)
-  #Éú³É³éÑùÅÅÐòºóµÄÕûÌåÊý¾Ý¼¯
+  #ç”ŸæˆæŠ½æ ·æŽ’åºåŽçš„æ•´ä½“æ•°æ®é›?
   sorted.all.data=select.all.data[all.sample.index,]
-  #È·¶¨ÑµÁ·¼¯ ÑéÖ¤¼¯ ²âÊÔ¼¯Ëùº¬ÓÐµÄÑù±¾µÄÊýÁ¿
+  #ç¡®å®šè®­ç»ƒé›? éªŒè¯é›? æµ‹è¯•é›†æ‰€å«æœ‰çš„æ ·æœ¬çš„æ•°é‡
   train.sample.num=round(all.sample.num*4/9)
   valid.sample.num=round(all.sample.num*2/9)
   test.sample.num=all.sample.num-train.sample.num-valid.sample.num
-  #µÃµ½ÐÂÉú³ÉµÄÑµÁ·¼¯ ÑéÖ¤¼¯ ²âÊÔ¼¯
+  #å¾—åˆ°æ–°ç”Ÿæˆçš„è®­ç»ƒé›? éªŒè¯é›? æµ‹è¯•é›?
   train.data=sorted.all.data[1:train.sample.num,]
   valid.data=sorted.all.data[(1+train.sample.num):(train.sample.num+valid.sample.num),]
   test.data=sorted.all.data[(1+train.sample.num+valid.sample.num):(all.sample.num),]
-  #ÎªÓëÔ­Êý¾Ý´æ´¢º¯ÊýÇø·Ö£¬´Ë´¦Éú³ÉµÄÎÄ¼þÃûÎªre_traindataset.csv£¬¶ø·Ç0_traindataset.csv
+  #ä¸ºä¸ŽåŽŸæ•°æ®å­˜å‚¨å‡½æ•°åŒºåˆ†ï¼Œæ­¤å¤„ç”Ÿæˆçš„æ–‡ä»¶åä¸ºre_traindataset.csvï¼Œè€Œéž0_traindataset.csv
   if(write.data.enable)
   {
     setwd(file.savepath)
-    #´æ´¢ÑµÁ·¼¯µÄÊý¾Ý
+    #å­˜å‚¨è®­ç»ƒé›†çš„æ•°æ®
     write.train.fname=paste(file.prefix,"re_traindataset.csv",sep = "")
     write.table(train.data,file=write.train.fname,sep = ",",eol="\n",quote=FALSE,na="0",row.names =row.names.enable,col.names = FALSE)
-    #´æ´¢ÑéÖ¤¼¯µÄÊý¾Ý
+    #å­˜å‚¨éªŒè¯é›†çš„æ•°æ®
     write.valid.fname=paste(file.prefix,"re_validdataset.csv",sep = "")
     write.table(valid.data,file=write.valid.fname,sep = ",",eol="\n",quote=FALSE,na="0",row.names = row.names.enable,col.names = FALSE)
-    #´æ´¢²âÊÔ¼¯µÄÊý¾Ý
+    #å­˜å‚¨æµ‹è¯•é›†çš„æ•°æ®
     write.test.fname=paste(file.prefix,"re_testdataset.csv",sep = "")
     write.table(test.data,file=write.test.fname,sep = ",",eol="\n",quote=FALSE,na="0",row.names =row.names.enable,col.names = FALSE)
   }

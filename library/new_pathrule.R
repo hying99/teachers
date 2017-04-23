@@ -80,7 +80,7 @@ NewPathrule<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,
                     }
                   }
                   second.predict.labels[k,gene.index]=1
-                  #将子节点中的最大概率赋值给该节点当做初始概率
+                  #将子节点中的最大正概率赋值给该节点当做初始正概率
                   second.prob[k,(2*gene.index-1)]=max(child.pos.prob)
                   second.prob[k,(2*gene.index)]=1-max(child.pos.prob)
                 } 
@@ -186,7 +186,7 @@ NewPathrule<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,
   ####第四步 自顶而下遍历样本，使得底层节点为正的概率小于等于上层节点为正的概率############
   #final.prob=second.prob
   #downtop.prob=DownTopStep(go.for.level.3,go.leaf.nodes.3,nodes.to.index,nodes.to.children,second.prob)
-  final.prob=TopDownStep(go.for.level.3,go.leaf.nodes.3,nodes.to.index,nodes.to.children,second.prob)
+  final.prob=TopDownStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,second.prob)
 #   for(k in 1:sample.nums)
 #   {
 #     for (i in 1:(total.levels-1))
