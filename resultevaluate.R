@@ -2,7 +2,7 @@
 
 ####第一步 将SVM的概率结果读入
 
-file.type=""
+file.type="change"
 file.middle="0"
 #设置mat文件存储路径
 setwd(paste(data.path,"//matfile",sep = ""))

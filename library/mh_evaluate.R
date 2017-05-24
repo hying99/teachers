@@ -16,7 +16,6 @@ MHevaluate<-function (predict.labels,true.labels)
         {
           tp.num=tp.num+1
         }
-        
       }
     }
     each.tp[i]=tp.num
@@ -30,7 +29,6 @@ MHevaluate<-function (predict.labels,true.labels)
       each.precision[i]=tp.num/sum(predict.labels[i,])
       each.recall[i]=tp.num/sum(true.labels[i,])
     }
-    
     
     if((each.precision[i]+each.recall[i])!=0)
     {

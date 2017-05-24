@@ -1,25 +1,27 @@
-PrecisionRecallCalculate <- function(predict,target,matrix.en=FALSE)
+
+PrecisionRecallCalculate <- function(predict,target)
 {
-  if(matrix.en==TRUE)
+  #判断输入的数据是什么类型，如果是data.frame,则将其转化为向量
+  #建议输入的类型是矩阵matrix
+  if(is.data.frame(predict))
   {
-    if(is.data.frame(predict))
-    {
-      predict=as.matrix(predict)
-    }
-    if(is.data.frame(target))
-    {
-      target=as.matrix(target)
-    }
+    predict=as.matrix(predict)
     aa=sapply(list(predict), as.vector)
     scores <- as.vector(aa)
-    bb=sapply(list(target), as.vector)
-    labels <- as.vector(bb)
-  }
-  else
+  }else
   {
     scores = predict
+  }
+  if(is.data.frame(target))
+  {
+    target=as.matrix(target)
+    bb=sapply(list(target), as.vector)
+    labels <- as.vector(bb)
+  }else
+  {
     labels = target
   }
+  
   n<-length(scores)
   if (n!=length(labels))
     stop("precision_recall: length of labels and scores does not match")
@@ -54,8 +56,7 @@ PrecisionRecallCalculate <- function(predict,target,matrix.en=FALSE)
     {
       tp=tp-1
       fn=fn+1
-    }
-    else
+    } else
     {
       tn=tn+1
       fp=fp-1
@@ -65,8 +66,7 @@ PrecisionRecallCalculate <- function(predict,target,matrix.en=FALSE)
       TP[i]=TP[i+1]
       FN[i]=FN[i+1]
       FP[i]=FP[i+1]
-    }
-    else
+    } else
     {
       
       TP[i]=tp

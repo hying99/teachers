@@ -1,10 +1,10 @@
 #替换原read_data函数对数据预处理的功能，对验证及测试数据集进行处理
-ValiddataScale<-function (valid.original.data,factor.col,sp,replace.outlier=TRUE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+ValiddataScale<-function (valid.original.data,factor.col.num,sp,replace.outlier=TRUE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
 {
   
   valid.col.num=ncol(valid.original.data)
   valid.row.num=nrow(valid.original.data)
-  numeric.col=setdiff(c(1:valid.col.num),factor.col)#根据输入的factor属性列号，求numeric属性的列号
+  numeric.col=c(1:(valid.col.num-factor.col.num))#根据输入的factor属性列数量，求numeric属性的列号
   valid.scaled.data=matrix(0,nrow = valid.row.num,ncol = valid.col.num)
   rownames(valid.scaled.data)=rownames(valid.original.data)
   

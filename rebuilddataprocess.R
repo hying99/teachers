@@ -20,15 +20,17 @@ go.general.table=Build.GO.class.labels(go.general.list)#生成基因及注释信息数据表
 ####第四步 读入待处理的训练数据
 #首先选择使用的数据集，1 cellcycle 2 derisi 3 eisen 4 gasch1 5 gasch2 6 church 7 spo 8 seq 9 struc 10 hom
 
-dataset.result=DatasetSelect(dataset.index = 5)
+dataset.result=DatasetSelect(dataset.index = 1)
 file.prefix=dataset.result[[1]]#得到数据集前缀名称
-factor.col=dataset.result[[2]]#得到内容为类别信息的列号
+factor.col.index=dataset.result[[2]]#得到内容为类别信息的列号
+factor.col.num=dataset.result[[3]]#得到factor列转化为数值后各列的总数
+factor.levels=dataset.result[[4]]
 #读取数据时，01调整Zrescale和标准化ZNormal不能同时使用
 setwd(data.path)#将工作路径设置为存储训练训练数据的路径，以便读取训练数据
 read.original=TRUE#此处选择读取原数据还是读取经过重采样的csv数据
 if(read.original)#选择读取原始的训练文件
 {
-  train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
+  train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   train.data=train.original[[1]]#基因的数据信息
   
 }else#选择读取重采样后的训练文件
@@ -46,7 +48,7 @@ replace.outlier = FALSE
 no.del.replace = FALSE
 NAreplace=TRUE
 Zrescale=TRUE
-trainscale.result=TraindataScale(train.data,factor.col,delete.outlier=delete.outlier,replace.outlier=replace.outlier,
+trainscale.result=TraindataScale(train.data,factor.col.num,delete.outlier=delete.outlier,replace.outlier=replace.outlier,
                                  no.del.replace =no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 remain.data=trainscale.result[[1]]
 sp=trainscale.result[[2]]
@@ -146,7 +148,7 @@ setwd(data.path)
 if(read.original)#选择读取原始的验证集文件
 {
   #读入valid基因特征属性
-  valid.original=ReadData(paste("originaldata//",file.prefix,"0.valid",sep = ""),factor.col = factor.col)
+  valid.original=ReadData(paste("originaldata//",file.prefix,"0.valid",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   valid.data=valid.original[[1]]#基因的数据信息
   write.data.fname=paste(file.prefix,"0_validdataset.csv",sep = "")
   write.class.fname=paste(file.prefix,"0_validclass.csv",sep = "")
@@ -162,7 +164,7 @@ if(read.original)#选择读取原始的验证集文件
 
 
   
-valid.scaled.data=ValiddataScale(valid.data,factor.col,sp,replace.outlier=replace.outlier,
+valid.scaled.data=ValiddataScale(valid.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                    no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
   
 valid.data.total=BuildValidset(valid.scaled.data,go.general.table,go.general.list,except.root.labels,
@@ -176,7 +178,7 @@ setwd(data.path)
 if(read.original)#选择读取原始的测试集文件
 {
   #读入test基因特征属性
-  test.original=ReadData(paste("originaldata//",file.prefix,"0.propertest",sep = ""),factor.col = factor.col)
+  test.original=ReadData(paste("originaldata//",file.prefix,"0.propertest",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   test.data=test.original[[1]]#基因的数据信息
   write.data.fname=paste(file.prefix,"0_testdataset.csv",sep = "")
   write.class.fname=paste(file.prefix,"0_testclass.csv",sep = "")
@@ -190,7 +192,7 @@ if(read.original)#选择读取原始的测试集文件
 }
 
   
-test.scaled.data=ValiddataScale(test.data,factor.col,sp,replace.outlier=replace.outlier,
+test.scaled.data=ValiddataScale(test.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                   no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 test.data.total=BuildValidset(test.scaled.data,go.general.table,go.general.list,except.root.labels,
                                 write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,

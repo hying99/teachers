@@ -1,9 +1,9 @@
 #替换原read_data函数对数据预处理的功能，对训练数据集进行处理
-TraindataScale<-function (training.original.data,factor.col,delete.outlier=FALSE,replace.outlier=FALSE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
+TraindataScale<-function (training.original.data,factor.col.num,delete.outlier=FALSE,replace.outlier=FALSE,no.del.replace=FALSE,NAreplace=TRUE,Zrescale=TRUE)
 {
   col.num=ncol(training.original.data)
   row.num=nrow(training.original.data)
-  numeric.col=setdiff(c(1:col.num),factor.col)
+  numeric.col=c(1:(col.num-factor.col.num))
   #绘制散点图和箱形图，记录数据的合理范围
   sp=list()
   sp_name=c()
