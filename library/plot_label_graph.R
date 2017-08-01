@@ -1,3 +1,5 @@
+#用于绘制所选节点的图结构
+
 PlotLabelGraph<-function (except.root.nodes,BP.univ.graph,plot.en=TRUE,num.only=FALSE,output.en=FALSE,write.pic.name)
 {
 select.nodes=c(except.root.nodes,"GO:0008150")
@@ -57,4 +59,5 @@ if(output.en==TRUE)
   dev.off();
 }
 
+return(graph.new)
 }

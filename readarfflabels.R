@@ -29,7 +29,7 @@ for(i in 1:nrow(original.scores))
   }
 }
 
-violate.detect.result=ViolateDetectlabel(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,o.predict.labels)
+#violate.detect.result=ViolateDetectlabel(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,o.predict.labels)
 
 #进行结果评价
 o.measure.result=MHevaluate(o.predict.labels,true.labels)
@@ -53,7 +53,7 @@ for(i in 1:nrow(pruned.scores))
 p.measure.result=MHevaluate(p.predict.labels,true.labels)
 p.prauc_result=PRAUCCalculate(pruned.scores,true.labels)
 
-
+#####下方用于验证PRAUC正确性，并无实际应用
 label.num=ncol(pruned.scores)
 each.class.auc=rep(0,label.num)
 each.class.freq=rep(0,label.num)

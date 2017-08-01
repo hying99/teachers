@@ -62,6 +62,8 @@ source("dataset_rebuild.R")
 source("dataset_select.R")
 source("factor_to_num.R")
 source("new_pathrule.R")#用于实现基于父子节点修改概率的后期处理方法
+source("BN_compute.R")#用于实现基于贝叶斯网络修改概率的后期处理方法
+source("BN_compute2.R")#用于实现基于贝叶斯网络修改概率的后期处理方法,先验概率设置为0.5
 #用于NegGOA实现的各函数
 source("getNegPotential.R")
 source("getGOIdx.R")

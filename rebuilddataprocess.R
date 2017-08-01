@@ -1,6 +1,7 @@
 ##采用rebuild函数首先重新生成训练集 验证集 测试集 而后进行训练集前期数据处理，并得到各集合的注释标签
 ##该文件对内部命名作了进一步的规范，对程序进行了进一步注释，形成模块化流程
 ##该文件不支持属性选择 20170329创建
+##该文件的数据集选择函数调用方法已经更改为可以进行含有factor因子的数据集处理模式
 
 ####第一步设置代码存放路径 以及数据存放路径
 work.path="H://R//CODES"
@@ -20,7 +21,7 @@ go.general.table=Build.GO.class.labels(go.general.list)#生成基因及注释信息数据表
 ####第四步 读入待处理的训练数据
 #首先选择使用的数据集，1 cellcycle 2 derisi 3 eisen 4 gasch1 5 gasch2 6 church 7 spo 8 seq 9 struc 10 hom
 
-dataset.result=DatasetSelect(dataset.index = 1)
+dataset.result=DatasetSelect(dataset.index = 8)
 file.prefix=dataset.result[[1]]#得到数据集前缀名称
 factor.col.index=dataset.result[[2]]#得到内容为类别信息的列号
 factor.col.num=dataset.result[[3]]#得到factor列转化为数值后各列的总数
@@ -91,7 +92,7 @@ select.node=NodeSelectByLevel(go.level.statistics,total.levels,add.root.node = T
 except.root.labels=setdiff(select.node,"GO:0008150")#去掉所选节点中的根结点，剩余节点的集合为需求的标签
 sub.graph <- subGraph(select.node, univ.graph)#绘制子图
 
-PlotLabelGraph(except.root.labels,univ.graph,num.only=FALSE,plot.en = TRUE,output.en = FALSE,write.pic.name = "go.graph.level.ps")
+graph.new=PlotLabelGraph(except.root.labels,univ.graph,num.only=TRUE,plot.en = TRUE,output.en = FALSE,write.pic.name = "go.graph.level.ps")
 each.go.level.num=graph.level.sel[except.root.labels]#给出每个节点所属于的层级
 
 ####第十步 得到所选节点的层级信息列表，叶子节点集合，父节点、子节点、祖先节点以及子孙节点列表

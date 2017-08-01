@@ -1,9 +1,9 @@
 ##采用TPR方法对结果进行后处理的文件 20170311
 
 ####第一步 将SVM的概率结果读入
-
-file.type="change"
 file.middle="0"
+file.type=""
+
 #设置mat文件存储路径
 setwd(paste(data.path,"//matfile",sep = ""))
 mat.file=paste(file.prefix,file.middle,file.type,"_decision.mat",sep = "")
@@ -15,7 +15,7 @@ prob.for.genes=probability.data$decision_test
 ####第二步 进行TPR规则处理
 
 #用于检测结果是否符合TPR规则
-violate.detect.result=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,prob.for.genes)
+#violate.detect.result=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,prob.for.genes)
 #TPR 两步计算公式
 # downtop.w.prob=DownTopParent(go.for.level.3,go.leaf.nodes.3,nodes.to.index,nodes.to.children,prob.for.genes,each.go.weight)
 # topdown.w.prob=TopDownStep(go.for.level.3,go.leaf.nodes.3,nodes.to.index,nodes.to.children,downtop.w.prob)
@@ -23,8 +23,8 @@ violate.detect.result=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.ind
 
 downtop.prob=DownTopStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,prob.for.genes)
 topdown.prob=TopDownStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,downtop.prob)
-violate.detect.down=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,downtop.prob)
-violate.detect.top=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,topdown.prob)
+#violate.detect.down=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,downtop.prob)
+#violate.detect.top=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,topdown.prob)
 
 
 # valid.en=FALSE #用于对验证集进行结果评价
@@ -91,6 +91,23 @@ final.predict.labels=final.result[[1]]
 final.predict.scores=final.result[[2]]
 prauc_result.final=PRAUCCalculate(final.predict.scores,test.select.table)
 measure.result.final=MHevaluate(final.predict.labels,test.select.table)
+
+
+
+#使用BN方法处理的结果
+bn.result=BNcompute(prob.for.genes,except.root.labels,go.for.level,go.leaf.nodes,test.select.table)
+bn.predict.labels=bn.result[[1]]
+bn.predict.scores=bn.result[[2]]
+prauc_result.bn=PRAUCCalculate(bn.predict.scores,test.select.table)
+measure.result.bn=MHevaluate(bn.predict.labels,test.select.table)
+
+#使用BN2方法处理的结果
+bn2.result=BNcompute2(prob.for.genes,except.root.labels,go.for.level,go.leaf.nodes,test.select.table)
+bn2.predict.labels=bn2.result[[1]]
+bn2.predict.scores=bn2.result[[2]]
+prauc_result.bn2=PRAUCCalculate(bn2.predict.scores,test.select.table)
+measure.result.bn2=MHevaluate(bn2.predict.labels,test.select.table)
+
 
 # if(test.en==TRUE)#此部分代码用于实现权值TPR算法
 # {

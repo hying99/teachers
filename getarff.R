@@ -1,7 +1,10 @@
 #用于生产arff文件的程序源文件，更改后不需运行rebuilddataprocess.R文件，全整合为一个文件
 #读入的arff文件用于提取arff属性设置表头
+#可以生成用于CLUS的数据文件,但是仅限于不存在factor类型数据的数据集，20170720
 #节点中包含根结点，故验证集、测试集中使用select.node 进行设置，而非except.root.labels
 #20170424进行第一次修改，按照rebuilddataprocess.R文件中内容修改、规范变量名称
+#20170614进行第二次修改，根据修改后的DatasetSelect函数增加factor.col.index，factor.col.num，factor.levels等参数
+
 #第一次使用，需先运行第三步，得到全局变量
 ####第一步设置代码存放路径 以及数据存放路径
 work.path="H://R//CODES"
@@ -19,9 +22,11 @@ source("headfile.R")
 
 ####第四步 确定待处理的数据集
 #首先选择使用的数据集，1 cellcycle 2 derisi 3 eisen 4 gasch1 5 gasch2 6 church 7 spo 8 seq 9 struc 10 hom
-dataset.result=DatasetSelect(dataset.index = 2)
+dataset.result=DatasetSelect(dataset.index = 6)
 file.prefix=dataset.result[[1]]#得到数据集前缀名称
-factor.col=dataset.result[[2]]#得到内容为类别信息的列号
+factor.col.index=dataset.result[[2]]#得到内容为类别信息的列号
+factor.col.num=dataset.result[[3]]#得到factor列转化为数值后各列的总数
+factor.levels=dataset.result[[4]]
 ####第五步 读取训练集数据
 #此处读取原始数据，替换NA值 进行归一化
 select.attributes.en=FALSE
@@ -34,7 +39,7 @@ setwd(data.path)
 read.original=TRUE#此处选择读取原数据还是读取经过重采样的csv数据
 if(read.original)#选择读取原始的训练文件
 {
-  train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col = factor.col)
+  train.original=ReadData(paste("originaldata//",file.prefix,"0.train",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   train.data=train.original[[1]]#基因的数据信息
   
 }else#选择读取重采样后的训练文件
@@ -42,7 +47,7 @@ if(read.original)#选择读取原始的训练文件
   file.name=paste("rebuilddata//",file.prefix,"re_traindataset.csv",sep = "")
   train.data=read.csv(file.name,header = FALSE,row.names = 1)#第一列是基因的名称
 }
-trainscale.result=TraindataScale(train.data,factor.col,delete.outlier=delete.outlier,replace.outlier=replace.outlier,
+trainscale.result=TraindataScale(train.data,factor.col.num,delete.outlier=delete.outlier,replace.outlier=replace.outlier,
                                  no.del.replace =no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 remain.data=trainscale.result[[1]]
 sp=trainscale.result[[2]]
@@ -91,7 +96,7 @@ sub.graph <- subGraph(select.node, univ.graph)#绘制子图
 if(read.original)#选择读取原始的验证集文件
 {
   #读入valid基因特征属性
-  valid.original=ReadData(paste("originaldata//",file.prefix,"0.valid",sep = ""),factor.col = factor.col)
+  valid.original=ReadData(paste("originaldata//",file.prefix,"0.valid",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   valid.data=valid.original[[1]]#基因的数据信息
   write.data.fname=paste(file.prefix,"0_validdataset.csv",sep = "")
   write.class.fname=paste(file.prefix,"0_validclass.csv",sep = "")
@@ -107,7 +112,7 @@ if(read.original)#选择读取原始的验证集文件
 
 
 
-valid.scaled.data=ValiddataScale(valid.data,factor.col,sp,replace.outlier=replace.outlier,
+valid.scaled.data=ValiddataScale(valid.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                  no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 #此处except.root.labels变量设置为select.node，包含根结点
 valid.data.total=BuildValidset(valid.scaled.data,go.general.table,go.general.list,select.node,
@@ -124,7 +129,7 @@ setwd(data.path)
 if(read.original)#选择读取原始的测试集文件
 {
   #读入test基因特征属性
-  test.original=ReadData(paste("originaldata//",file.prefix,"0.propertest",sep = ""),factor.col = factor.col)
+  test.original=ReadData(paste("originaldata//",file.prefix,"0.propertest",sep = ""),factor.col.index = factor.col.index,factor.levels = factor.levels)
   test.data=test.original[[1]]#基因的数据信息
   write.data.fname=paste(file.prefix,"0_testdataset.csv",sep = "")
   write.class.fname=paste(file.prefix,"0_testclass.csv",sep = "")
@@ -137,7 +142,7 @@ if(read.original)#选择读取原始的测试集文件
   write.class.fname=paste(file.prefix,"1_testclass.csv",sep = "")
 }
 
-test.scaled.data=ValiddataScale(test.data,factor.col,sp,replace.outlier=replace.outlier,
+test.scaled.data=ValiddataScale(test.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                 no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 test.data.total=BuildValidset(test.scaled.data,go.general.table,go.general.list,select.node,
                               write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,
