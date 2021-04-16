@@ -1,7 +1,7 @@
 #用于重新生成训练集 验证集 测试集 20170329
 #加入了数据集选择函数，修改factor.col为factor.col.index
-work.path="H://R//CODES"
-data.path="H://R//DATA"
+work.path="F://R//CODES"
+data.path="F://R//DATA"
 setwd(work.path)#设置工作路径
 
 #引入库函数以及自定义的函数
@@ -11,7 +11,7 @@ annotation.final.BP=AnnotationFinal("BP")#提取BP结构下的所有基因及注释信息
 go.general.list.BP=Get.GO.all.classes(annotation.final.BP)#根据基因的注释GO标签得到基因的全部GO标签
 go.general.table.BP=Build.GO.class.labels(go.general.list.BP)#生成基因及注释信息数据表
 
-file.savepath="H://R//DATA//rebuilddata"
+file.savepath="F://R//DATA//rebuilddata"
 write.data.enable=TRUE
 row.names.enable=TRUE
 

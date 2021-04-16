@@ -1,5 +1,6 @@
 ####用于实现基于贝叶斯网络修改概率的后处理方法
 ####20170731
+####不独立节点的概率均设置为其初始分类器给出的概率
 
 BNcompute<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,test.select.table)
 {
@@ -18,6 +19,8 @@ BNcompute<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,te
   second.predict.labels=matrix(0,sample.nums,node.nums)
   #经过自上而下过程后产生的标签
   final.predict.labels=matrix(0,sample.nums,node.nums)
+  #存储经过第一步运算后各节点预测为1的概率
+  second.predict.scores=matrix(0,sample.nums,node.nums)
   #存储各节点预测为1的概率值
   final.predict.scores=matrix(0,sample.nums,node.nums)
   
@@ -193,9 +196,9 @@ BNcompute<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,te
   #second.measure.result=MHevaluate(second.predict.labels,test.select.table)
   
   ####第四步 自顶而下遍历样本，使得底层节点为正的概率小于等于上层节点为正的概率############
-  
+  #final.prob=second.prob
   final.prob=TopDownStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,second.prob)
- 
+  #final.prob=NaiveDownTop(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.parents,second.prob)
   
   #将计算的最终概率转化为标签值
   for(i in 1:sample.nums)
@@ -203,6 +206,7 @@ BNcompute<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,te
     for(j in 1:node.nums)
     {
       final.predict.scores[i,j]=final.prob[i,(2*j-1)]
+      second.predict.scores[i,j]=second.prob[i,(2*j-1)]
       if(final.prob[i,(2*j-1)]>=0.5)
       {
         final.predict.labels[i,j]=1
@@ -213,8 +217,8 @@ BNcompute<-function (first.prob,except.root.labels,go.for.level,go.leaf.nodes,te
   ####第五步 返回预测结果以及各节点预测为1的概率值（score）
  
   
-  final.result=list(final.predict.labels,final.predict.scores)
-  return (final.result)
+  total.result=list(second.predict.labels,second.predict.scores,final.predict.labels,final.predict.scores)
+  return (total.result)
   
 }
 

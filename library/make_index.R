@@ -1,15 +1,26 @@
 #用于生成个GO标签的索引序列号，以及每个节点与其父节点、子节点、祖先节点、子孙节点的序列号对应关系
 #输入为待测节点的集合 20170310
-MakeIndex<-function (except.root.labels)
+MakeIndex<-function (input.labels,include.root=FALSE)
 {
   #生成每个节点对应的序号
   nodes.to.index=list()
-  for(i in 1:length(except.root.labels))
+  if(include.root==TRUE)
   {
-    nodes.to.index[i]=i
+    for(i in 1:length(input.labels))
+    {
+      nodes.to.index[i]=i-1
+    }
+  }else
+  {
+    for(i in 1:length(input.labels))
+    {
+      nodes.to.index[i]=i
+    }
   }
   
-  names(nodes.to.index)=except.root.labels
+ 
+  
+  names(nodes.to.index)=input.labels
   
   #生成每个节点的子节点列表，各节点的子节点集合均用序号表示
   nodes.to.children=list()
@@ -21,11 +32,11 @@ MakeIndex<-function (except.root.labels)
   nodes.to.descendants=list()
   
   
-  for(i in 1:length(except.root.labels))
+  for(i in 1:length(input.labels))
   {
     #生成每个节点的子节点列表
-    child.inter.ids=AnnotationDbi::get(except.root.labels[[i]], GOBPCHILDREN)
-    child.ids=intersect(except.root.labels,child.inter.ids)
+    child.inter.ids=AnnotationDbi::get(input.labels[[i]], GOBPCHILDREN)
+    child.ids=intersect(input.labels,child.inter.ids)
     if(length(child.ids)>0)
     {
       inter.child.vec=vector()
@@ -39,8 +50,8 @@ MakeIndex<-function (except.root.labels)
       nodes.to.children[[i]]=NA
     }
     #生成每个节点的祖先节点列表
-    ancestor.inter.ids=AnnotationDbi::get(except.root.labels[i], GOBPANCESTOR)
-    ancestor.ids=intersect(except.root.labels,ancestor.inter.ids)
+    ancestor.inter.ids=AnnotationDbi::get(input.labels[i], GOBPANCESTOR)
+    ancestor.ids=intersect(input.labels,ancestor.inter.ids)
     if(length(ancestor.ids)>0)
     {
       inter.ancestor.vec=vector()
@@ -55,8 +66,8 @@ MakeIndex<-function (except.root.labels)
     }
     
     #生成每个节点的父节点列表
-    parent.inter.ids=AnnotationDbi::get(except.root.labels[i], GOBPPARENTS)
-    parent.ids=intersect(except.root.labels,parent.inter.ids)
+    parent.inter.ids=AnnotationDbi::get(input.labels[i], GOBPPARENTS)
+    parent.ids=intersect(input.labels,parent.inter.ids)
     if(length(parent.ids)>0)
     {
       inter.parent.vec=vector()
@@ -71,8 +82,8 @@ MakeIndex<-function (except.root.labels)
     }
     
     #生成每个节点的子孙节点列表
-    des.inter.ids=AnnotationDbi::get(except.root.labels[i], GOBPOFFSPRING)
-    descendant.ids=intersect(except.root.labels,des.inter.ids)
+    des.inter.ids=AnnotationDbi::get(input.labels[i], GOBPOFFSPRING)
+    descendant.ids=intersect(input.labels,des.inter.ids)
     if(length(descendant.ids)>0)
     {
       inter.descendant.vec=vector()
@@ -87,10 +98,10 @@ MakeIndex<-function (except.root.labels)
     }
   }
   #用节点名称给list中各元素命名
-  names(nodes.to.children)=except.root.labels
-  names(nodes.to.ancestors)=except.root.labels
-  names(nodes.to.parents)=except.root.labels
-  names(nodes.to.descendants)=except.root.labels
+  names(nodes.to.children)=input.labels
+  names(nodes.to.ancestors)=input.labels
+  names(nodes.to.parents)=input.labels
+  names(nodes.to.descendants)=input.labels
   
   total.index=list(nodes.to.index,nodes.to.children,nodes.to.ancestors,nodes.to.parents,nodes.to.descendants)
   return (total.index)

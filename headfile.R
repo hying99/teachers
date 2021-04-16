@@ -15,7 +15,7 @@ library(marray)
 library(scales)
 library(gpls)
 library(plsgenomics)
-
+library(keras)
 setwd(library.path)
 
 source("annotation_extract.R")
@@ -45,13 +45,15 @@ source("downtop_parent.R")
 source("downtop_weighted.R")
 source("downtop_step.R")
 source("topdown_step.R")
+source("naive_downtop.R")#用于实现down top方式得出最终结果
 source("make_index.R")
 source("mh_evaluate.R")
 source("precision_recall_calculate.R")
+source("pr_auc_calculate.R")
+source("prauc_calculate.R")
 source("smote_samples.R")
 source("add_neg_samples.R")
 source("select_attributes.R")
-source("prauc_calculate.R")
 source("write_arff.R")
 source("validdata_scale.R")
 source("traindata_scale.R")
@@ -64,6 +66,8 @@ source("factor_to_num.R")
 source("new_pathrule.R")#用于实现基于父子节点修改概率的后期处理方法
 source("BN_compute.R")#用于实现基于贝叶斯网络修改概率的后期处理方法
 source("BN_compute2.R")#用于实现基于贝叶斯网络修改概率的后期处理方法,先验概率设置为0.5
+source("nn_get_dataset.R")#用于神经网络算法中生成整合父节点标签的数据集
+source("get_ancestor_dataset.R")#用于神经网络算法中生成整合祖先节点标签的数据集
 #用于NegGOA实现的各函数
 source("getNegPotential.R")
 source("getGOIdx.R")

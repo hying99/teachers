@@ -1,6 +1,8 @@
 #将原始基因数据读入,去掉原始数据中的样本标签，并将数据转化为数值矩阵
 #目前NA替换，数据归一化、标准化工作已经改在scale函数里实现
-#增加了对factor数据的处理，目前可以处理全部数据集 将factor.col变量改名为factor.col.index
+#增加了对factor数据的处理，目前可以处理全部数据集 
+#将factor数据转化为向量的形式
+#将factor.col变量改名为factor.col.index
 #并且增加了factor.levels变量，表示factor的具体取值信息 20170524
 ReadData<-function (filename,factor.col.index,factor.levels,Nametoupper=TRUE,Tonum=TRUE)
 {
@@ -15,6 +17,7 @@ ReadData<-function (filename,factor.col.index,factor.levels,Nametoupper=TRUE,Ton
   
   #如果数据中存在factor类型，则将factor类型数据转化为数字型
   #factor.col.index用来指定哪些列的数据是facttor类型
+  #将转化后的数据放于向量的末端
   if(length(factor.col.index)>0)
   {
     factortonum.data=FactorToNum(matrix.data,factor.col.index,factor.levels)

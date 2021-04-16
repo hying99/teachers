@@ -2,7 +2,7 @@
 
 ####第一步 将SVM的概率结果读入
 file.middle="0"
-file.type=""
+file.type="change"
 
 #设置mat文件存储路径
 setwd(paste(data.path,"//matfile",sep = ""))
@@ -10,6 +10,7 @@ mat.file=paste(file.prefix,file.middle,file.type,"_decision.mat",sep = "")
 probability.data=readMat(mat.file,fixNames = FALSE)
 #probability.data=readMat("cellcycle0replaceprocess_decision.mat",fixNames = FALSE)
 #prob.for.genes=probability.data$decision
+#prob.for.genes  存储时，对每个节点来说，第一位是为label1的概率，而后是为0的概率
 prob.for.genes=probability.data$decision_test
 
 ####第二步 进行TPR规则处理
@@ -23,6 +24,8 @@ prob.for.genes=probability.data$decision_test
 
 downtop.prob=DownTopStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,prob.for.genes)
 topdown.prob=TopDownStep(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.children,downtop.prob)
+#topdown.prob=NaiveDownTop(go.for.level,go.leaf.nodes,nodes.to.index,nodes.to.parents,downtop.prob)
+
 #violate.detect.down=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,downtop.prob)
 #violate.detect.top=ViolateDetectprob(go.for.level, go.leaf.nodes,nodes.to.index,nodes.to.children,topdown.prob)
 
@@ -89,6 +92,7 @@ if(test.en==TRUE)
 final.result=NewPathrule(prob.for.genes,except.root.labels,go.for.level,go.leaf.nodes,test.select.table)
 final.predict.labels=final.result[[1]]
 final.predict.scores=final.result[[2]]
+aa=Pr_Auc_Calculate(final.predict.scores,test.select.table,plot.en=TRUE)
 prauc_result.final=PRAUCCalculate(final.predict.scores,test.select.table)
 measure.result.final=MHevaluate(final.predict.labels,test.select.table)
 
@@ -96,8 +100,8 @@ measure.result.final=MHevaluate(final.predict.labels,test.select.table)
 
 #使用BN方法处理的结果
 bn.result=BNcompute(prob.for.genes,except.root.labels,go.for.level,go.leaf.nodes,test.select.table)
-bn.predict.labels=bn.result[[1]]
-bn.predict.scores=bn.result[[2]]
+bn.predict.labels=bn.result[[3]]
+bn.predict.scores=bn.result[[4]]
 prauc_result.bn=PRAUCCalculate(bn.predict.scores,test.select.table)
 measure.result.bn=MHevaluate(bn.predict.labels,test.select.table)
 

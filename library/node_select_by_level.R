@@ -18,7 +18,7 @@ NodeSelectByLevel<-function (go.level.statistics,select.to.level=1,add.root.node
   }
   if(add.root.node==TRUE)
   {
-    select.nodes=c(select.nodes,"GO:0008150")
+    select.nodes=c("GO:0008150",select.nodes)
   }
   
   

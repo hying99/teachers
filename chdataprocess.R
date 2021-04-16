@@ -1,17 +1,19 @@
-##采用rebuild函数首先重新生成训练集 验证集 测试集 而后进行训练集前期数据处理，并得到各集合的注释标签
-##该文件对内部命名作了进一步的规范，对程序进行了进一步注释，形成模块化流程
-##该文件不支持属性选择 20170329创建
-##该文件的数据集选择函数调用方法已经更改为可以进行含有factor因子的数据集处理模式
-##except.root.table test.select.table等标签顺序均按照except.root.labels进行排列
+##在rebuilddataprocess基础上增加了生成生成train.hf部分
+##该文件用于支持chloss2文件以及DAGlabel文件
+##文件的运行流程为rebuilddataprocess+chloss2+DAGlabel
+##20190308创建
+
+##
 ####第一步设置代码存放路径 以及数据存放路径
 work.path="D://R//CODES"
 data.path="D://R//DATA"
 setwd(work.path)#首先将工作路径设置为代码的路径
 
+
 ####第二步 引入库函数以及自定义的函数
 source("headfile.R")
 
-####第三步 得到BO结构信息及注释信息
+####第三步 得到GO结构信息及注释信息
 ontology.sel="BP"
 univ.graph <- Build.universal.graph.ontology.down(ontology = ontology.sel)#得到BP全图
 annotation.final=AnnotationFinal(ontology.sel)#提取BP结构下的所有基因及注释信息
@@ -21,7 +23,7 @@ go.general.table=Build.GO.class.labels(go.general.list)#生成基因及注释信息数据表
 ####第四步 读入待处理的训练数据
 #首先选择使用的数据集，1 cellcycle 2 derisi 3 eisen 4 gasch1 5 gasch2 6 church 7 spo 8 seq 9 struc 10 hom
 
-dataset.result=DatasetSelect(dataset.index = 2)
+dataset.result=DatasetSelect(dataset.index = 3)
 file.prefix=dataset.result[[1]]#得到数据集前缀名称
 factor.col.index=dataset.result[[2]]#得到内容为类别信息的列号
 factor.col.num=dataset.result[[3]]#得到factor列转化为数值后各列的总数
@@ -108,6 +110,13 @@ nodes.to.children=total.index[[2]]
 nodes.to.ancestors=total.index[[3]]
 nodes.to.parents=total.index[[4]]
 nodes.to.descendants=total.index[[5]]
+ 
+#用于生成train.hf
+
+with.root.labels=c(except.root.labels,"GO:0008150")
+withroot.total.index=MakeIndex(with.root.labels)
+withroot.nodes.to.children=withroot.total.index[[2]]
+withroot.nodes.to.parents=withroot.total.index[[4]]
 
 #这段代码是产生TPR算法中权值信息所需，目前暂不使用 20170311
 # each.go.weight=unname(each.go.level.num)
@@ -140,7 +149,7 @@ select.attributes.en=FALSE#不进行属性选择
 
 data.total=BuildTrainDataset(root.table, except.root.labels, data.matrix=remain.select.data,
                              ontology = ontology.sel, adjust.ratio=0.2,ratio.negative = 0, common.genes = common.genes,
-                             seed = 1,select.attributes.en=select.attributes.en,write.en=FALSE)
+                             seed = 1,select.attributes.en=select.attributes.en,write.en=TRUE)
 
 
 ####第十三步 生成验证集
@@ -163,13 +172,13 @@ if(read.original)#选择读取原始的验证集文件
 }
 
 
-
+#归一化
   
 valid.scaled.data=ValiddataScale(valid.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                    no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
   
 valid.data.total=BuildValidset(valid.scaled.data,go.general.table,go.general.list,except.root.labels,
-                                 write.data.enable=FALSE,write.class.enable=FALSE,write.data.fname=write.data.fname,
+                                 write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,
                                  write.class.fname=write.class.fname,select.attributes.en=select.attributes.en,select.attributes)
 valid.select.data=valid.data.total[[1]]
 valid.select.table=valid.data.total[[2]]
@@ -196,7 +205,7 @@ if(read.original)#选择读取原始的测试集文件
 test.scaled.data=ValiddataScale(test.data,factor.col.num,sp,replace.outlier=replace.outlier,
                                   no.del.replace = no.del.replace,NAreplace=NAreplace,Zrescale=Zrescale)
 test.data.total=BuildValidset(test.scaled.data,go.general.table,go.general.list,except.root.labels,
-                                write.data.enable=FALSE,write.class.enable=FALSE,write.data.fname=write.data.fname,
+                                write.data.enable=TRUE,write.class.enable=TRUE,write.data.fname=write.data.fname,
                                 write.class.fname=write.class.fname,select.attributes.en=select.attributes.en,select.attributes)
 test.select.data=test.data.total[[1]]
 test.select.table=test.data.total[[2]]
